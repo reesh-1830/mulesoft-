@@ -1,0 +1,18 @@
+SELECT first_name, last_name
+FROM actor;
+ 
+
+SELECT UPPER(CONCAT(first_name, ' ', last_name)) AS `Actor Name`
+FROM actor;
+
+SELECT actor_id, first_name, last_name
+FROM actor
+WHERE first_name = "Joe";
+
+SELECT actor_id, first_name, last_name
+FROM actor
+WHERE last_name like '%GEN%';
+
+SELECT actor_id, last_name, first_name
+FROM actor
+WHERE last_name like '%LI%';
