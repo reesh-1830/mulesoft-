@@ -1,0 +1,64 @@
+import java.sql.*;
+import java.util.*;
+
+public class SQLite {
+
+   public static void main( String args[] ) {
+      Connection c = null;
+      Statement stmt = null;
+      Scanner ob=new Scanner(System.in);
+      
+      try {
+         Class.forName("org.sqlite.JDBC");
+         c = DriverManager.getConnection("jdbc:sqlite:test.db");
+         System.out.println("Opened database successfully");
+         
+
+         stmt = c.createStatement();
+         stmt.executeUpdate("DROP TABLE IF EXISTS MOVIES");
+         
+         String sql = "CREATE TABLE movies(name STRING, actor STRING, actress STRING, release_year STRING, director STRING)"; 
+         stmt.executeUpdate(sql);
+         System.out.println("Table created successfully");
+         System.out.println("enter no of movies");
+         int ch=ob.nextInt();
+         ob.nextLine();
+         for(int i=0;i<ch;i++) {System.out.println("enter movie name");
+         String name = ob.nextLine();
+         System.out.println("enter actor name");
+         String actor = ob.nextLine();
+         System.out.println("enter actress name");
+         String actress = ob.nextLine();
+         System.out.println("enter release_year name");
+         String release_year = ob.nextLine();
+         System.out.println("enter director name");
+         String director = ob.nextLine();
+         sql = String.format("INSERT INTO movies VALUES('%s','%s','%s','%s','%s')",name, actor, actress, release_year, director);
+         stmt.executeUpdate(sql);}
+         sql = "SELECT * FROM movies";
+			ResultSet resultSet = stmt.executeQuery(sql);
+			while(resultSet.next()) {
+				System.out.println("name of the movie: " + resultSet.getString("name"));
+				System.out.println("Actor: " + resultSet.getString("actor"));
+				System.out.println("Actress: " + resultSet.getString("actress"));
+				System.out.println("Year of Release: " + resultSet.getString("release_year"));
+				System.out.println("Directed by: " + resultSet.getString("director"));
+				System.out.print("\n\n\n");
+			}
+		 System.out.println("enter actor name");	
+         String actor = ob.nextLine();
+         sql = "Select * from movies where actor ="+actor;
+         resultSet = stmt.executeQuery(sql);
+			while(resultSet.next()) {
+				System.out.println("name of the movie/s played by  " +actor+":"+ resultSet.getString("name"));
+			}
+         stmt.close();
+         c.close();
+      } catch ( Exception e ) {
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+         System.exit(0);
+      }
+      
+      
+   }
+}
